@@ -152,6 +152,16 @@
     <!-- chatGPT api에서 $.ajax사용하기 위해 작성 -->
     <script> 
         window.onload=function(){ //로드 되기 이전에 하면 getElementByID가 잘 작동하지않음
+            //BaseDate 디폴트를 오늘날짜로
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("basedate").value = today;
+
+            //제출폼
             var user_name_input = document.getElementById('user_name'); //이벤트리스너 등록용, 실제 제출값과는 무관
             var age_input = document.getElementById('age'); //이벤트리스너 등록용, 실제 제출값과는 무관
             var User_Profile = document.getElementById('User_Profile');
@@ -313,7 +323,7 @@
         }
         //최소개발기준 : 두번째 API 시작 - ChatGPT로 옷차림 추천받기
         function chat(result){
-            const api_key = "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" 
+            const api_key = "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" 
             //일반적으로 api키는 서버에서 가지고있지만, 프로젝트를 위해 일시적으로 자바스크립트에 작성
             var user_name_input = document.getElementById('user_name'); 
             var age_input = document.getElementById('age'); 
