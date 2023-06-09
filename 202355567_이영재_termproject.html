@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>TermProject</title>
 	<style>
-        [title] {
+        [title] { /*최소개발기준 : pseudo-classes 1번째*/
             color: #40128B;
         }
 
@@ -20,13 +20,13 @@
         text-align: left;
         width: fit-content;
         margin: auto;
-        padding-left: 20px; /* 리스트 내부 패딩 - 불릿과 텍스트 사이의 거리 */
+        padding-left: 20px;
     }
         #User_Profile ul {
         text-align: left;
         width: fit-content;
         margin: auto;
-        padding-left: 20px; /* 리스트 내부 패딩 - 불릿과 텍스트 사이의 거리 */
+        padding-left: 20px;
     }
 
         #User_Profile li {
@@ -61,11 +61,11 @@
             transition: right 0.3s ease-in-out;
         }
 
-        nav:hover {
+        nav:hover { /*최소 개발 기준 : attribute selectors 1번째*/
             right: 0;
         }
 
-        [href] {
+        [href] { /*최소개발기준 : pseudo-classes 2번째*/
             color: black;
             padding: 10px;
             text-decoration: none;
@@ -102,7 +102,7 @@
             border-radius: 10px;
         }
 
-        button:active {
+        button:active { /*최소 개발 기준 : attribute selectors 2번째*/
             background-color: #A459D1;
         }
         table, th, td {
@@ -155,7 +155,7 @@
             //BaseDate 디폴트를 오늘날짜로
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //0~11로 세지는 달을 1~12로 수정
             var yyyy = today.getFullYear();
 
             today = yyyy + '-' + mm + '-' + dd;
@@ -323,7 +323,7 @@
         }
         //최소개발기준 : 두번째 API 시작 - ChatGPT로 옷차림 추천받기
         function chat(result){
-            const api_key = "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" 
+            const api_key = "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" 
             //일반적으로 api키는 서버에서 가지고있지만, 프로젝트를 위해 일시적으로 자바스크립트에 작성
             var user_name_input = document.getElementById('user_name'); 
             var age_input = document.getElementById('age'); 
@@ -361,7 +361,11 @@
             }).then(function (response) {
             let fashionDiv = document.getElementById('fashion');
             fashionDiv.innerHTML = "<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>" + response.choices[0].message.content;
+            }).catch(function(error) {
+                alert("API키가 만료되었습니다.")
             });
+            
+            
         } 
         //최소개발기준 : 서비스 2. 만나이 계산기
     function calculateAge() {
