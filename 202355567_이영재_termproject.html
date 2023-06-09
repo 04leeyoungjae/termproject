@@ -122,15 +122,20 @@
         }
         #main {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         flex-wrap: wrap;
         padding: 0px;
     }
 
         /* Profile과 Age_Calculator 섹션의 너비를 설정합니다. */
-        #Profile, #Age_Calculator {
-            flex:1;
-            width: 0;
+        #Profile {
+        flex: 0 0 auto;
+        margin-right: 50px; /* 오른쪽 마진 추가 */
+    }
+
+        #Age_Calculator {
+            flex: 0 0 auto;
+            margin-left: 50px; /* 왼쪽 마진 추가 */
         }
 
     </style>
@@ -472,6 +477,9 @@
                     <!-- 최소개발기준 : 서비스1. 만나이 계산기-->
                     <h2 title="Age_Calculator">Age_Calculator</h2>
                     <p>만 나이를 작성하시는데에 어려움이 있다면 사용해보세요.</p>
+                <form>
+                    <fieldset>
+                        <legend>Form</legend>
                     <label for="birthday">생일:</label>
                     <input type="date" id="birthday"> <!--최소개발기준 : input type date(3번째)-->
                     <br>
@@ -479,6 +487,8 @@
                     <input type="date" id="basedate">
                     <br>
                     <button onclick="calculateAge()">계산하기</button>
+                </fieldset>
+                </form>
                     <div id="ageResult">
                     <!-- 여기에 결과가 나타납니다 -->
                     </div>
