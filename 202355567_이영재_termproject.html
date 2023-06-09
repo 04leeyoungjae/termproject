@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <title>Document</title>
 	<style>
+        [title] {
+            color: #40128B;
+        }
+
         body {
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #FBFFDC;
+            background-color: #D0F5BE;
             font-family: Arial, sans-serif;
-            color: #333;
             line-height: 1.6;
         }
         #menu_div ul {
@@ -56,14 +59,14 @@
             right: 0;
         }
 
-        nav a {
+        [href] {
             color: black;
             padding: 10px;
             text-decoration: none;
             margin: 0 15px;
         }
 
-        nav a:hover {
+        [href]:hover {
             background-color: #79E0EE;
             color:#F266AB;
         }
@@ -437,13 +440,13 @@
                 <li><a href="#Profile">Profile</a></li>
                 <br>
                 <br>
-                <li><a href="#Age_Calculator" style="white-space: nowrap;">Age_Calculator</a></li>
+                <li><a href="#Age_Calculator" style="white-space: nowrap;">Age Calculator</a></li>
                 <br>
                 <br>
                 <li><a href="#Weather">Weather</a></li>
                 <br>
                 <br>
-                <li><a href="#TimeTable">TimeTable</a></li>
+                <li><a href="#TimeTable">Time Table</a></li>
                 </h3>
             </ul>
         </div>
@@ -475,7 +478,7 @@
                 <!--서비스1. 만나이계산기-->
                 <div id="Age_Calculator">
                     <!-- 최소개발기준 : 서비스1. 만나이 계산기-->
-                    <h2 title="Age_Calculator">Age_Calculator</h2>
+                    <h2 title="Age_Calculator">Age Calculator</h2>
                     <p>만 나이를 작성하시는데에 어려움이 있다면 사용해보세요.</p>
                 <form>
                     <fieldset>
@@ -513,7 +516,7 @@
     </section>
     <section> <!--최소개발기준 : 시멘틱태그(section)--> <!--서비스3. 시간표 만들기-->
         <div id="TimeTable">
-            <h2 title="TimeTable">TimeTable</h2>
+            <h2 title="TimeTable">Time Table</h2>
             <p>당신의 시간표를 작성해보세요.<br>빈 셀을 클릭하여 작성하거나, 작성된 셀을 눌러 비울 수 있습니다.</p>
             <table id="timetable">
             <tr><th><!--비어있는행--></th><th>월요일</th><th>화요일</th><th>수요일</th><th>목요일</th><th>금요일</th></tr>
