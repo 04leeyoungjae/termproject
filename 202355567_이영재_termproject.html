@@ -152,7 +152,7 @@
     <!-- chatGPT api에서 $.ajax사용하기 위해 작성 -->
     <script> 
         window.onload=function(){ //로드 되기 이전에 하면 getElementByID가 잘 작동하지않음
-            //BaseDate 디폴트를 오늘날짜로
+            //1. BaseDate 디폴트를 오늘날짜로
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //0~11로 세지는 달을 1~12로 수정
@@ -161,7 +161,7 @@
             today = yyyy + '-' + mm + '-' + dd;
             document.getElementById("basedate").value = today;
 
-            //제출폼
+            //2. Profile 제출에 필요한 변수 선언
             var user_name_input = document.getElementById('user_name'); //이벤트리스너 등록용, 실제 제출값과는 무관
             var age_input = document.getElementById('age'); //이벤트리스너 등록용, 실제 제출값과는 무관
             var User_Profile = document.getElementById('User_Profile');
@@ -172,7 +172,7 @@
         user_name_input.addEventListener("blur", function() { //최소개발기준 : 입력값 formatting(이름은 한국어로)
             let numCheck = user_name_input.value.search(/[0-9]/g);
             let letterCheck = user_name_input.value.search(/[a-zA-Z]/g);
-            if(letterCheck != -1 || numCheck != -1) { //영어나 숫자 입력시 focus
+            if(letterCheck != -1 || numCheck != -1) { //영어나 숫자 입력시 경고
                 warning.innerHTML = "이름은 한국어로 입력해주세요.";
                 warning.style.color = "red";
                 submit.disabled = true;
@@ -186,7 +186,7 @@
         });
 
         age_input.addEventListener("blur", function() { //최소개발기준 : 입력값 formatting(나이는 숫자로)
-            let nonNumericRegex = /\D/g;
+            let nonNumericRegex = /\D/g; // \D는 숫자가 아닌 문자를 의미함. g는 문자열 전체 즉 1글자라도 숫자가 아니면 True가 리턴되어 경고 실행
             if(nonNumericRegex.test(age_input.value)) {
                 warning.innerHTML = "나이는 숫자로 입력해주세요.";
                 warning.style.color = "red";
@@ -200,37 +200,23 @@
             }
         });
         }
-        function submitForm(){
+        function submitForm(){ //Profile을 제출함.
             var user_name_input = document.getElementById('user_name'); //submit을 눌렀을 때 실질적으로 제출되는 값
             var age_input = document.getElementById('age'); //submit을 눌렀을 때 실질적으로 제출되는 값
             var gender = document.querySelector('input[name="gender"]:checked').value;
             var User_Profile = document.getElementById('User_Profile');
 
+            //이미지 소스를 외부링크로 하여 컴퓨터에 저장되어 있지 않아도 이미지를 볼 수 있음.
             User_Profile.innerHTML = '<img src="https://yt3.googleusercontent.com/ytc/AGIKgqMdi8MPEGLECdbWcCIgFlX_eB2GiGyRYKx8hBdc=s176-c-k-c0x00ffffff-no-rj" width="200px" height="200px">' + "<ul><li>이름: " + user_name_input.value + "</li><li>나이: " + age_input.value + "</li><li>성별: " + gender + "</li></ul>";
             //최소개발기준 : 프로필을 list로 작성
             document.getElementById('profile_form').style.display = 'none'; //입력이 끝난 폼을 숨김.
             alert("환영합니다! "+user_name_input.value+"님!")
         } 
         //최소개발기준 : API 첫번째 - 위치의 날씨정보 출력
-        function pusan_univ(){
-            _location="부산대학교"
-            var nx=98; var ny=77;
-            weather(_location,nx,ny)
-        }
-        function seoul_univ(){
-            _location="서울대학교"
-            var nx=59; var ny=125;
-            weather(_location,nx,ny)
-        }
-        function pusan_beach(){
-            _location="해운대해수욕장"
-            var nx=100; var ny=76;
-            weather(_location,nx,ny)
-        }
-        function weather(_location,nx,ny){
+        function weather(__location,nx,ny){ //location은 javascript에서 이미 사용되므로 충돌피하기 위해 __사용
             const serviceKey="rIuqq0nXcahOmNniDKXZV1f7OxS6d5FulortZDgtXeIBN5Hh4Yu6ghW1n10hF8ncmzp%2BIHg10gGgQu6HLOKNhw%3D%3D"
             const dataType="XML";
-            const pageNo=1; const numOfRows=10
+            const pageNo=1; const numOfRows=10 //API호출에 필요한 매개변수들
             var today = new Date();
             var year = today.getFullYear(); 
             var month = today.getMonth()+1; //getMonth 사용시 0~11로 달이 표현되서 수정
@@ -264,24 +250,24 @@
             if (minutes<=9){
                 minutes="0"+minutes //입력형식이 hhmm과 같은 형식이여서 065 가 아닌 0605와 같은 형식으로 변경
             }
-            var base_date=year+""+month+""+date
-            var base_time=hours+""+minutes
+            var base_date=year+""+month+""+date //""을 추가하지않으면 2022 12 12 의 경우 20221212가 아닌 2046으로 출력될수도 있음.
+            var base_time=hours+""+minutes //위와 마찬가지 문제 발생예방
 
             var url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?"+"serviceKey="+serviceKey+"&numOfRows="+numOfRows+"&pageNo="+pageNo+"&dataType="+dataType+"&base_date="+base_date+"&base_time="+base_time+"&nx="+nx+"&ny="+ny;
-            // API 요청
+            //API 요청
             fetch(url)
             .then(response => response.text())
             .then(data => {
-                // API 요청을 통해 받아온 XML 파일을 파싱함
+                //API 요청을 통해 받아온 XML 파일을 파싱함
                 let parser = new DOMParser();
                 let xmlDoc = parser.parseFromString(data, "text/xml");
 
-                // 파싱된 XML 파일에서 원하는 변수 추출
+                //파싱된 XML 파일에서 원하는 변수 추출
                 let items = xmlDoc.getElementsByTagName('item');
                 let PTY, REH, RN1, T1H, WSD;
                 for (let i = 0; i < items.length; i++) {
-                    let category = items[i].getElementsByTagName('category')[0].textContent;
-                    let obsrValue = items[i].getElementsByTagName('obsrValue')[0].textContent;
+                    let category = items[i].getElementsByTagName('category')[0].textContent; //xml파일에서 category에 적힌 것을 변수명으로 사용
+                    let obsrValue = items[i].getElementsByTagName('obsrValue')[0].textContent; //xml파일에서 obsrValue에 적힌 것을 값으로 사용
                     switch(category) {
                         case 'PTY': //강수정보
                             PTY = obsrValue;
@@ -300,7 +286,7 @@
                             break;
                     }
                 }
-                //PTY값이 정수형이므로, 이를 사용자가 해석할 수 있는 형태로 변환
+                //PTY값이 정수형이므로, 공식 문서를 참고하여 이를 사용자가 해석할 수 있는 형태로 변환
                 if (PTY==0){
                     PTY="맑음"
                 }
@@ -315,7 +301,7 @@
                 }
                 let weatherResultDiv = document.getElementById('weather-result');
                 let result = "날씨 : " + PTY + "<br>습도 : " + REH +"%" + "<br>강우량 : " + RN1  +"mm" + "<br>기온 : " + T1H +"°C" + "<br>풍속 : " + WSD+"m/s";
-                weatherResultDiv.innerHTML = _location +"의 현재 날씨는 다음과 같습니다.<br>" + result; //받아온 변수를 바탕으로 body에 작성함
+                weatherResultDiv.innerHTML = __location +"의 현재 날씨는 다음과 같습니다.<br>" + result; //받아온 변수를 바탕으로 body에 작성함
                 let fashionDiv = document.getElementById('fashion');
                 fashionDiv.innerHTML = "<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>"+"잠시만 기다리시면 ChatGPT의 옷차림 추천을 받으실 수 있습니다."
                 chat(result) //결과를 매개변수로 하여 ChatGPT API에 넘김
@@ -323,32 +309,36 @@
         }
         //최소개발기준 : 두번째 API 시작 - ChatGPT로 옷차림 추천받기
         function chat(result){
-            const api_key = "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" 
+            const api_key = "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" 
             //일반적으로 api키는 서버에서 가지고있지만, 프로젝트를 위해 일시적으로 자바스크립트에 작성
+
+            //프로필에서 작성했던 내용을 받아옴. 
             var user_name_input = document.getElementById('user_name'); 
             var age_input = document.getElementById('age'); 
             var gender = document.querySelector('input[name="gender"]:checked').value;
             var messages = [];
 
-            if (user_name_input.value == "") //프로필 입력을 안했다면 디폴트 질문만
+            if (user_name_input.value == "" || age_input.value=="") //프로필 입력을 안했다면 디폴트 질문만
             { 
                 messages = [
-                    { role: 'system', content: 'You are a helpful assistant.' },
-                    { role: 'user', content: result +"일 때 옷차림을 추천해주세요. 30자내외마다 줄바꿈해주세요." },
+                    { role: 'system', content: 'You are a helpful assistant.' }, //chatGPT의 프롬프트로, 없어도 동작함.
+                    { role: 'user', content: result +"일 때 옷차림을 추천해주세요." }, //프로필을 입력하지 않았다면 날씨 기반으로만 추천함.
                 ];
             }
             else{
                 messages = [ //프로필 입력을 완료했다면 프로필을 바탕으로 ChatGPT가 답변해줌
-                    { role: 'system', content: 'You are a helpful assistant.' },
-                    { role: 'user', content: age_input.value+"세 "+gender+" "+user_name_input.value+"님에게 어울리는 옷차림을 추천해주세요. 날씨는 다음과 같습니다." + result + "30자내외마다 줄바꿈해주세요." },
-                ];
-            }
+                    { role: 'system', content: 'You are a helpful assistant.' }, //chatGPT의 프롬프트로, 없어도 동작함.
+                    { role: 'user', content: age_input.value+"세 "+gender+" "+user_name_input.value+"님에게 어울리는 옷차림을 추천해주세요. 날씨는 다음과 같습니다." + result},
+                ]; //사용자의 질문으로 프로필에 입력한 정보에서 nn세의 남성 혹은 여성이라는 정보를 chatGPT가 받아서 조금 더 정확한 추천을 받을 수 있음. 
+                //또한 이름을 받을 수 있어 사용자가 더 깊은 상호작용을 느낄 수 있게 함.
+                console.log("프로필입력O")
+            } 
 
             const data = { //API 호출시 필요한 parameter
-            model: 'gpt-3.5-turbo',
-            temperature: 0.5,
-            n: 1,
-            messages: messages,
+            model: 'gpt-3.5-turbo', //모델 이름, 특이사항 없음
+            temperature: 0.5, //창의적인 답변(1) vs 정확한 답변(0). 옷차림에 관한 질문이므로 반반으로 설정 
+            n: 1, //생성되는 대답의 개수 설정, 많으면 대답하는 token의 수가 많아지므로 절약하기 위해 1개만
+            messages: messages, //chatGPT에 보내는 질문
             }
             $.ajax({ //chatGPT에 요청
             url: "https://api.openai.com/v1/chat/completions",
@@ -360,7 +350,7 @@
             data: JSON.stringify(data), //받아온 데이터를 JSON 문자열로 변환
             }).then(function (response) {
             let fashionDiv = document.getElementById('fashion');
-            fashionDiv.innerHTML = "<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>" + response.choices[0].message.content;
+            fashionDiv.innerHTML = "<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>" + response.choices[0].message.content; //받아온 응답을 fashinDiv에 작성함
             }).catch(function(error) {
                 alert("API키가 만료되었습니다.")
             });
@@ -373,7 +363,7 @@
         var BaseDate = new Date(document.getElementById('basedate').value);
         var age = BaseDate.getFullYear()-Birthday.getFullYear();
         var m = BaseDate.getMonth()-Birthday.getMonth();
-        if (m < 0 || (m === 0 && BaseDate.getDate() < Birthday.getDate())) { //나이가 음수일 수는 없으므로, 잘못된 입력을 카운트함
+        if (m < 0 || (m === 0 && BaseDate.getDate() < Birthday.getDate())) { //나이가 음수일 수는 없기 떄문에..
             age--;
         }
         if(age==-1){
@@ -390,14 +380,24 @@
         } 
     }
     //최소개발기준 서비스3. 시간표만들기
-    function isValidTime(time) {
-        return /^\d{4}$/.test(time) && parseInt(time) >= 0 && parseInt(time) <= 2400; //입력하지 않거나, 숫자가 아닌걸 입력하거나, 4자리로 입력하지 않거나, 범위를 벗어난 숫자입력하면 False
+    function isValidTime(time) { //입력하지 않거나, 숫자가 아닌걸 입력하거나, 4자리로 입력하지 않거나, 범위를 벗어난 숫자입력하면 안됨.
+        return /^\d{4}$/.test(time) && parseInt(time) >= 0 && parseInt(time) <= 2400; 
     }
       
-    function formatTime(time) {
-        return time.substring(0, 2) + ":" + time.substring(2, 4); //시간을 0930으로 입력받은걸 09:30으로 교정
+    function formatTime(time) { //시간을 0930으로 입력받은걸 09:30으로 교정
+        return time.substring(0, 2) + ":" + time.substring(2, 4); 
     }
-      
+
+    function findRowIndex(table, start) { //시간을 어디에 배열할지 찾아줌
+        for (var i = 1; i < table.rows.length; i++) {
+            var rowTime = table.rows[i].cells[0].innerHTML.split(" ~ ")[0].replace(":", ""); //시간을 입력했을 때 시작시간을 비교하여 적절한 위치에 삽입하도록 위치를 찾음
+            if (parseInt(start) < parseInt(rowTime)) {
+                return i;
+            }
+        }
+          return -1; // 중간에 삽입될 곳이 없다면 맨아래에 추가함.
+    }
+
     function addTime() {
         var start = prompt("시작 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
         var end = prompt("종료 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
@@ -405,19 +405,21 @@
             alert("유효한 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
             return; //입력을 정상적으로 진행시키지 않고 종료함
         }
-        if (start>end){
+        if (start>end){ //굳이 else if 가 아니여도 위에서 return이 진행되기에 상관없음
             alert("끝나는 시간이 시작하는 시간보다 빠릅니다!")
             return; //입력을 정상적으로 진행시키지 않고 종료함
         }
         var time = formatTime(start) + " ~ " + formatTime(end); 
         var table = document.getElementById("timetable");
         var rowIndex = findRowIndex(table, start);
-        var row = table.insertRow(rowIndex);
-        var firstCell = row.insertCell(0);
-        firstCell.innerHTML = time;
-        firstCell.onclick = function() { this.parentElement.remove(); }; //시간이 적힌 행을 클릭하면 삭제됨
+        var row = table.insertRow(rowIndex); //findRowIndex에서 찾은 넣어야하는 줄에 테이블 추가
+        var firstCell = row.insertCell(0); 
+        firstCell.innerHTML = time; //첫번째 행에는 시간을 작성해야함
+        firstCell.onclick = function() { //시간이 적힌 셀을 클릭하면 해당하는 열이 삭제됨
+            this.parentElement.remove(); 
+        }; 
         for (var i = 1; i < 6; i++) { //월화수목금 제작
-            var cell = row.insertCell(i);
+            var cell = row.insertCell(i); //시간 추가 함수의 핵심으로 월화수목금 셀을 만듦.
             cell.onclick = function() {
                 if (this.innerHTML == "") { //비어있는 셀을 클릭하면 내용을 삽입함
                       var subject = prompt("과목명을 입력하세요");
@@ -433,16 +435,6 @@
                 }
             };
         }
-    }
-      
-    function findRowIndex(table, start) {
-        for (var i = 1; i < table.rows.length; i++) {
-            var rowTime = table.rows[i].cells[0].innerHTML.split(" ~ ")[0].replace(":", ""); //시간을 입력했을 때 시작시간을 비교하여 적절한 위치에 삽입하도록 위치를 찾음
-            if (parseInt(start) < parseInt(rowTime)) {
-                return i;
-            }
-        }
-          return -1; // 중간에 삽입될 곳이 없다면 맨아래에 추가함.
     }
     </script>
 </head>
@@ -519,13 +511,14 @@
         </div>
     </main>
  <!--최소개발기준 : 시멘틱태그(section)--> <!--서비스2. 날씨-->
+    <section>
         <div id="Weather">
             <!-- 최소개발기준 : 서비스2. 날씨 안내 및 옷차림 추천 -->
             <h2 title="Weather">Weather</h2>
             <p>버튼을 누르시면 날씨와 ChatGPT의 옷차림 추천을 받아보실 수 있습니다!</p>
-            <button onclick="pusan_univ()">부산대학교의 날씨보기</button>
-            <button onclick="seoul_univ()">서울대학교의 날씨보기</button>
-            <button onclick="pusan_beach()">해운대 해수욕장의 날씨보기</button>
+            <button onclick="weather('부산대학교',98,77)">부산대학교의 날씨보기</button>
+            <button onclick="weather('서울대학교',59,125)">서울대학교의 날씨보기</button>
+            <button onclick="weather('해운대해수욕장',100,76)">해운대 해수욕장의 날씨보기</button>
         </div>
         <div id="weather-result">
             <!-- 여기에 날씨가 나타납니다. -->
@@ -542,10 +535,11 @@
             <tr><th><!--비어있는행--></th><th>월요일</th><th>화요일</th><th>수요일</th><th>목요일</th><th>금요일</th></tr>
             </table>
             <button onclick="addTime()">시간 추가</button>
+            <p>시간은 시작시간을 기준으로 자동으로 배열되며, 시간을 누르면 해당 열이 삭제됩니다.</p>
         </div>
     </section>
-    <footer>
-        <section>
+    <footer><!--최소개발기준 : 시멘틱태그(footer)-->
+        <section><!--최소개발기준 : 시멘틱태그(section)-->
             <p>Made by 202355567 이영재</p>
         </section> 
     </footer>
