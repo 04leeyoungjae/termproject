@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>TermProject</title>
 	<style>
-        [title] { /*최소개발기준 : pseudo-classes 1번째*/
+        [title]{ /*최소개발기준 : pseudo-classes 1번째*/
             color: #40128B;
         }
 
-        body {
+        body{
             margin: 0;
             padding: 0;
             text-align: center;
@@ -16,23 +16,23 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
         }
-        #menu_div ul {
+        #menu_div ul{
         text-align: left;
         width: fit-content;
         margin: auto;
         padding-left: 20px;
     }
-        #User_Profile ul {
+        #User_Profile ul{
         text-align: left;
         width: fit-content;
         margin: auto;
         padding-left: 20px;
     }
 
-        #User_Profile li {
+        #User_Profile li{
         padding-left: 0px;
     }
-        #profile_form {
+        #profile_form{
         width: 400px;  /* 폭 조절 */
         margin: auto;  /* 가운데 정렬 */
     }
@@ -42,14 +42,14 @@
             text-align: center;
             color: black;
         }
-        footer {
+        footer{
             background-color: #D0F5BE;
             padding: 10px;
             text-align: center;
             color: black;
         }
 
-        nav {
+        nav{
             position: fixed;
             right: -200px; /* 네비게이션 바의 너비 */
             top: 0;
@@ -61,34 +61,34 @@
             transition: right 0.3s ease-in-out;
         }
 
-        nav:hover { /*최소 개발 기준 : attribute selectors 1번째*/
+        nav:hover{ /*최소 개발 기준 : attribute selectors 1번째*/
             right: 0;
         }
 
-        [href] { /*최소개발기준 : pseudo-classes 2번째*/
+        [href]{ /*최소개발기준 : pseudo-classes 2번째*/
             color: black;
             padding: 10px;
             text-decoration: none;
             margin: 0 15px;
         }
 
-        [href]:hover {
+        [href]:hover{
             background-color: #79E0EE;
             color:#F266AB;
         }
 
-        main {
+        main{
             padding: 20px;
             background-color: #D0F5BE;
         }
 
-        section {
+        section{
             margin-bottom: 20px;
             padding: 20px;
             border-radius: 10px;
         }
 
-        button {
+        button{
             background-color: #79E0EE;
             color: white;
             border: none;
@@ -102,10 +102,10 @@
             border-radius: 10px;
         }
 
-        button:active { /*최소 개발 기준 : attribute selectors 2번째*/
+        button:active{ /*최소 개발 기준 : attribute selectors 2번째*/
             background-color: #A459D1;
         }
-        table, th, td {
+        table, th, td{
             border: 5px solid black;
             padding: 10px;
             width: 100px;
@@ -114,22 +114,22 @@
             vertical-align: middle;
         }
 
-        table {
+        table{
             table-layout: fixed;
             width: 100%;
             border-collapse: collapse;
         }
 
 
-        th {
+        th{
             background-color: #79E0EE;
             color: white;
         }
 
-        td {
+        td{
             background-color: #D0F5BE;
         }
-        #main { /*main과 #main은 다름*/
+        #main{ /*main과 #main은 다름*/
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -137,12 +137,12 @@
     }
 
         /* Profile과 Age_Calculator 너비 설정 */
-        #Profile {
+        #Profile{
         flex: 0 0 auto;
         margin-right: 50px;
     }
 
-        #Age_Calculator {
+        #Age_Calculator{
             flex: 0 0 auto;
             margin-left: 50px;
         }
@@ -153,84 +153,84 @@
     <script> 
         window.onload=function(){ //로드 되기 이전에 하면 getElementByID가 잘 작동하지않음
             //1. BaseDate 디폴트를 오늘날짜로
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); //0~11로 세지는 달을 1~12로 수정
-            var yyyy = today.getFullYear();
+            var today=new Date();
+            var dd=String(today.getDate()).padStart(2, '0');
+            var mm=String(today.getMonth() + 1).padStart(2, '0'); //0~11로 세지는 달을 1~12로 수정
+            var yyyy=today.getFullYear();
 
-            today = yyyy + '-' + mm + '-' + dd;
-            document.getElementById("basedate").value = today;
+            today=yyyy + '-' + mm + '-' + dd;
+            document.getElementById("basedate").value=today;
 
             //2. Profile 제출에 필요한 변수 선언
-            var user_name_input = document.getElementById('user_name'); //이벤트리스너 등록용, 실제 제출값과는 무관
-            var age_input = document.getElementById('age'); //이벤트리스너 등록용, 실제 제출값과는 무관
-            var User_Profile = document.getElementById('User_Profile');
-            var warning = document.getElementById('warning');
-            var submit = document.querySelector('button');
+            var user_name_input=document.getElementById('user_name'); //이벤트리스너 등록용, 실제 제출값과는 무관
+            var age_input=document.getElementById('age'); //이벤트리스너 등록용, 실제 제출값과는 무관
+            var User_Profile=document.getElementById('User_Profile');
+            var warning=document.getElementById('warning');
+            var submit=document.querySelector('button');
             submit.disabled=true; //공란으로 제출하는것을 방지
 
-        user_name_input.addEventListener("blur", function() { //최소개발기준 : 입력값 formatting(이름은 한국어로)
-            let numCheck = user_name_input.value.search(/[0-9]/g);
-            let letterCheck = user_name_input.value.search(/[a-zA-Z]/g);
-            if(letterCheck != -1 || numCheck != -1) { //영어나 숫자 입력시 경고
-                warning.innerHTML = "이름은 한국어로 입력해주세요.";
-                warning.style.color = "red";
-                submit.disabled = true;
+        user_name_input.addEventListener("blur", function(){ //최소개발기준 : 입력값 formatting(이름은 한국어로)
+            let numCheck=user_name_input.value.search(/[0-9]/g);
+            let letterCheck=user_name_input.value.search(/[a-zA-Z]/g);
+            if(letterCheck != -1 || numCheck != -1){ //영어나 숫자 입력시 경고
+                warning.innerHTML="이름은 한국어로 입력해주세요.";
+                warning.style.color="red";
+                submit.disabled=true;
                 user_name_input.focus();
             }
-            else {
-                warning.innerHTML = "";
-                if(warning.innerHTML === "" && warning.innerHTML === "" && user_name_input.value.length!=0 &&age_input.value.length!=0) //모두 작성이 완료되어야만 제출가능
-                    submit.disabled = false;
+            else{
+                warning.innerHTML="";
+                if(warning.innerHTML=="" && warning.innerHTML=="" && user_name_input.value.length!=0 &&age_input.value.length!=0) //모두 작성이 완료되어야만 제출가능
+                    submit.disabled=false;
             }
         });
 
-        age_input.addEventListener("blur", function() { //최소개발기준 : 입력값 formatting(나이는 숫자로)
-            let nonNumericRegex = /\D/g; // \D는 숫자가 아닌 문자를 의미함. g는 문자열 전체 즉 1글자라도 숫자가 아니면 True가 리턴되어 경고 실행
-            if(nonNumericRegex.test(age_input.value)) {
-                warning.innerHTML = "나이는 숫자로 입력해주세요.";
-                warning.style.color = "red";
-                submit.disabled = true;
+        age_input.addEventListener("blur", function(){ //최소개발기준 : 입력값 formatting(나이는 숫자로)
+            let nonNumericRegex=/\D/g; // \D는 숫자가 아닌 문자를 의미함. g는 문자열 전체 즉 1글자라도 숫자가 아니면 True가 리턴되어 경고 실행
+            if(nonNumericRegex.test(age_input.value)){
+                warning.innerHTML="나이는 숫자로 입력해주세요.";
+                warning.style.color="red";
+                submit.disabled=true;
                 age_input.focus();
             }
-            else {
-                warning.innerHTML = "";
-                if(warning.innerHTML === "" && warning.innerHTML === "" && user_name_input.value.length!=0 &&age_input.value.length!=0) //모두 작성이 완료되어야만 제출가능
-                    submit.disabled = false;
+            else{
+                warning.innerHTML="";
+                if(warning.innerHTML=="" && warning.innerHTML=="" && user_name_input.value.length!=0 &&age_input.value.length!=0) //모두 작성이 완료되어야만 제출가능
+                    submit.disabled=false;
             }
         });
         }
         function submitForm(){ //Profile을 제출함.
-            var user_name_input = document.getElementById('user_name'); //submit을 눌렀을 때 실질적으로 제출되는 값
-            var age_input = document.getElementById('age'); //submit을 눌렀을 때 실질적으로 제출되는 값
-            var gender = document.querySelector('input[name="gender"]:checked').value;
-            var User_Profile = document.getElementById('User_Profile');
+            var user_name_input=document.getElementById('user_name'); //submit을 눌렀을 때 실질적으로 제출되는 값
+            var age_input=document.getElementById('age'); //submit을 눌렀을 때 실질적으로 제출되는 값
+            var gender=document.querySelector('input[name="gender"]:checked').value;
+            var User_Profile=document.getElementById('User_Profile');
 
             //이미지 소스를 외부링크로 하여 컴퓨터에 저장되어 있지 않아도 이미지를 볼 수 있음.
-            User_Profile.innerHTML = '<img src="https://yt3.googleusercontent.com/ytc/AGIKgqMdi8MPEGLECdbWcCIgFlX_eB2GiGyRYKx8hBdc=s176-c-k-c0x00ffffff-no-rj" width="200px" height="200px">' + "<ul><li>이름: " + user_name_input.value + "</li><li>나이: " + age_input.value + "</li><li>성별: " + gender + "</li></ul>";
+            User_Profile.innerHTML='<img src="https://yt3.googleusercontent.com/ytc/AGIKgqMdi8MPEGLECdbWcCIgFlX_eB2GiGyRYKx8hBdc=s176-c-k-c0x00ffffff-no-rj" width="200px" height="200px">' + "<ul><li>이름: " + user_name_input.value + "</li><li>나이: " + age_input.value + "</li><li>성별: " + gender + "</li></ul>";
             //최소개발기준 : 프로필을 list로 작성
-            document.getElementById('profile_form').style.display = 'none'; //입력이 끝난 폼을 숨김.
+            document.getElementById('profile_form').style.display='none'; //입력이 끝난 폼을 숨김.
             alert("환영합니다! "+user_name_input.value+"님!")
         } 
-        //최소개발기준 : API 첫번째 - 위치의 날씨정보 출력
+        //최소개발기준 : API 첫번째 - 위치의 날씨정보 출력(https://www.data.go.kr/data/15084084/openapi.do 기상청_단기예보 ((구)_동네예보) 조회서비스)
         function weather(__location,nx,ny){ //location은 javascript에서 이미 사용되므로 충돌피하기 위해 __사용
             const serviceKey="rIuqq0nXcahOmNniDKXZV1f7OxS6d5FulortZDgtXeIBN5Hh4Yu6ghW1n10hF8ncmzp%2BIHg10gGgQu6HLOKNhw%3D%3D"
             const dataType="XML";
             const pageNo=1; const numOfRows=10 //API호출에 필요한 매개변수들
-            var today = new Date();
-            var year = today.getFullYear(); 
-            var month = today.getMonth()+1; //getMonth 사용시 0~11로 달이 표현되서 수정
+            var today=new Date();
+            var year=today.getFullYear(); 
+            var month=today.getMonth()+1; //getMonth 사용시 0~11로 달이 표현되서 수정
 
             if (month<=9){
                 month="0"+month //입력형식이 yyyymmdd 와 같은 형식이여서 202366 과 같은 형식이면 오류발생, 20230606이 되어야함
             }
 
-            var date = today.getDate();
+            var date=today.getDate();
             if (date<=9){
                 date="0"+date //입력형식이 yyyymmdd 와 같은 형식이여서 202366 과 같은 형식이면 오류발생, 20230606이 되어야함
             }
 
-            var hours = today.getHours();
+            var hours=today.getHours();
             if (hours<=5){
                 hours="00"
             }
@@ -246,43 +246,43 @@
             /*
                 hours가 6시 단위로 갱신되어서 이외의 hours를 넣을경우 에러발생함
             */
-            var minutes = today.getMinutes();
+            var minutes=today.getMinutes();
             if (minutes<=9){
                 minutes="0"+minutes //입력형식이 hhmm과 같은 형식이여서 065 가 아닌 0605와 같은 형식으로 변경
             }
             var base_date=year+""+month+""+date //""을 추가하지않으면 2022 12 12 의 경우 20221212가 아닌 2046으로 출력될수도 있음.
             var base_time=hours+""+minutes //위와 마찬가지 문제 발생예방
 
-            var url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?"+"serviceKey="+serviceKey+"&numOfRows="+numOfRows+"&pageNo="+pageNo+"&dataType="+dataType+"&base_date="+base_date+"&base_time="+base_time+"&nx="+nx+"&ny="+ny;
+            var url="http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?"+"serviceKey="+serviceKey+"&numOfRows="+numOfRows+"&pageNo="+pageNo+"&dataType="+dataType+"&base_date="+base_date+"&base_time="+base_time+"&nx="+nx+"&ny="+ny;
             //API 요청
             fetch(url)
             .then(response => response.text())
-            .then(data => {
+            .then(data =>{
                 //API 요청을 통해 받아온 XML 파일을 파싱함
-                let parser = new DOMParser();
-                let xmlDoc = parser.parseFromString(data, "text/xml");
+                let parser=new DOMParser();
+                let xmlDoc=parser.parseFromString(data, "text/xml");
 
                 //파싱된 XML 파일에서 원하는 변수 추출
-                let items = xmlDoc.getElementsByTagName('item');
+                let items=xmlDoc.getElementsByTagName('item');
                 let PTY, REH, RN1, T1H, WSD;
-                for (let i = 0; i < items.length; i++) {
-                    let category = items[i].getElementsByTagName('category')[0].textContent; //xml파일에서 category에 적힌 것을 변수명으로 사용
-                    let obsrValue = items[i].getElementsByTagName('obsrValue')[0].textContent; //xml파일에서 obsrValue에 적힌 것을 값으로 사용
-                    switch(category) {
+                for (let i=0; i < items.length; i++){
+                    let category=items[i].getElementsByTagName('category')[0].textContent; //xml파일에서 category에 적힌 것을 변수명으로 사용
+                    let obsrValue=items[i].getElementsByTagName('obsrValue')[0].textContent; //xml파일에서 obsrValue에 적힌 것을 값으로 사용
+                    switch(category){
                         case 'PTY': //강수정보
-                            PTY = obsrValue;
+                            PTY=obsrValue;
                             break;
                         case 'REH': //습도
-                            REH = obsrValue;
+                            REH=obsrValue;
                             break;
                         case 'RN1': //강우량
-                            RN1 = obsrValue;
+                            RN1=obsrValue;
                             break;
                         case 'T1H': //기온
-                            T1H = obsrValue;
+                            T1H=obsrValue;
                             break;
                         case 'WSD': //풍속
-                            WSD = obsrValue;
+                            WSD=obsrValue;
                             break;
                     }
                 }
@@ -299,42 +299,42 @@
                 else{
                     PTY="눈"
                 }
-                let weatherResultDiv = document.getElementById('weather-result');
-                let result = "날씨 : " + PTY + "<br>습도 : " + REH +"%" + "<br>강우량 : " + RN1  +"mm" + "<br>기온 : " + T1H +"°C" + "<br>풍속 : " + WSD+"m/s";
-                weatherResultDiv.innerHTML = __location +"의 현재 날씨는 다음과 같습니다.<br>" + result; //받아온 변수를 바탕으로 body에 작성함
-                let fashionDiv = document.getElementById('fashion');
-                fashionDiv.innerHTML = "<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>"+"잠시만 기다리시면 ChatGPT의 옷차림 추천을 받으실 수 있습니다."
+                let weatherResultDiv=document.getElementById('weather-result');
+                let result="날씨 : " + PTY + "<br>습도 : " + REH +"%" + "<br>강우량 : " + RN1  +"mm" + "<br>기온 : " + T1H +"°C" + "<br>풍속 : " + WSD+"m/s";
+                weatherResultDiv.innerHTML=__location +"의 현재 날씨는 다음과 같습니다.<br>" + result; //받아온 변수를 바탕으로 body에 작성함
+                let fashionDiv=document.getElementById('fashion');
+                fashionDiv.innerHTML="<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>"+"잠시만 기다리시면 ChatGPT의 옷차림 추천을 받으실 수 있습니다."
                 chat(result) //결과를 매개변수로 하여 ChatGPT API에 넘김
             })//첫번째 API 끝
         }
-        //최소개발기준 : 두번째 API 시작 - ChatGPT로 옷차림 추천받기
-        function chat(result){
-            const api_key = "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" 
+        
+        function chat(result){//최소개발기준 : 두번째 API 시작 - ChatGPT로 옷차림 추천받기(https://platform.openai.com/docs/api-reference/introduction)
+            const api_key="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" 
             //일반적으로 api키는 서버에서 가지고있지만, 프로젝트를 위해 일시적으로 자바스크립트에 작성
 
             //프로필에서 작성했던 내용을 받아옴. 
-            var user_name_input = document.getElementById('user_name'); 
-            var age_input = document.getElementById('age'); 
-            var gender = document.querySelector('input[name="gender"]:checked').value;
-            var messages = [];
+            var user_name_input=document.getElementById('user_name'); 
+            var age_input=document.getElementById('age'); 
+            var gender=document.querySelector('input[name="gender"]:checked').value;
+            var messages=[];
 
-            if (user_name_input.value == "" || age_input.value=="") //프로필 입력을 안했다면 디폴트 질문만
-            { 
-                messages = [
-                    { role: 'system', content: 'You are a helpful assistant.' }, //chatGPT의 프롬프트로, 없어도 동작함.
-                    { role: 'user', content: result +"일 때 옷차림을 추천해주세요." }, //프로필을 입력하지 않았다면 날씨 기반으로만 추천함.
+            if (user_name_input.value=="" || age_input.value=="") //프로필 입력을 안했다면 디폴트 질문만
+           { 
+                messages=[
+                   { role: 'system', content: 'You are a helpful assistant.' }, //chatGPT의 프롬프트로, 없어도 동작함.
+                   { role: 'user', content: result +"일 때 옷차림을 추천해주세요." }, //프로필을 입력하지 않았다면 날씨 기반으로만 추천함.
                 ];
             }
             else{
-                messages = [ //프로필 입력을 완료했다면 프로필을 바탕으로 ChatGPT가 답변해줌
-                    { role: 'system', content: 'You are a helpful assistant.' }, //chatGPT의 프롬프트로, 없어도 동작함.
-                    { role: 'user', content: age_input.value+"세 "+gender+" "+user_name_input.value+"님에게 어울리는 옷차림을 추천해주세요. 날씨는 다음과 같습니다." + result},
+                messages=[ //프로필 입력을 완료했다면 프로필을 바탕으로 ChatGPT가 답변해줌
+                   { role: 'system', content: 'You are a helpful assistant.' }, //chatGPT의 프롬프트로, 없어도 동작함.
+                   { role: 'user', content: age_input.value+"세 "+gender+" "+user_name_input.value+"님에게 어울리는 옷차림을 추천해주세요. 날씨는 다음과 같습니다." + result},
                 ]; //사용자의 질문으로 프로필에 입력한 정보에서 nn세의 남성 혹은 여성이라는 정보를 chatGPT가 받아서 조금 더 정확한 추천을 받을 수 있음. 
                 //또한 이름을 받을 수 있어 사용자가 더 깊은 상호작용을 느낄 수 있게 함.
                 console.log("프로필입력O")
             } 
 
-            const data = { //API 호출시 필요한 parameter
+            const data={ //API 호출시 필요한 parameter
             model: 'gpt-3.5-turbo', //모델 이름, 특이사항 없음
             temperature: 0.5, //창의적인 답변(1) vs 정확한 답변(0). 옷차림에 관한 질문이므로 반반으로 설정 
             n: 1, //생성되는 대답의 개수 설정, 많으면 대답하는 token의 수가 많아지므로 절약하기 위해 1개만
@@ -343,65 +343,63 @@
             $.ajax({ //chatGPT에 요청
             url: "https://api.openai.com/v1/chat/completions",
             method: 'POST',
-            headers: {
+            headers:{
                 Authorization:"Bearer "+api_key,
                 'Content-Type':'application/json',
             },
             data: JSON.stringify(data), //받아온 데이터를 JSON 문자열로 변환
-            }).then(function (response) {
-            let fashionDiv = document.getElementById('fashion');
-            fashionDiv.innerHTML = "<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>" + response.choices[0].message.content; //받아온 응답을 fashinDiv에 작성함
-            }).catch(function(error) {
-                alert("API키가 만료되었습니다.")
+            }).then(function (response){
+            let fashionDiv=document.getElementById('fashion');
+            fashionDiv.innerHTML="<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>" + response.choices[0].message.content; //받아온 응답을 fashinDiv에 작성함
             });
             
             
         } 
         //최소개발기준 : 서비스 2. 만나이 계산기
-    function calculateAge() {
-        var Birthday = new Date(document.getElementById('birthday').value);
-        var BaseDate = new Date(document.getElementById('basedate').value);
-        var age = BaseDate.getFullYear()-Birthday.getFullYear();
-        var m = BaseDate.getMonth()-Birthday.getMonth();
-        if (m < 0 || (m === 0 && BaseDate.getDate() < Birthday.getDate())) { //나이가 음수일 수는 없기 떄문에..
+    function calculateAge(){
+        var Birthday=new Date(document.getElementById('birthday').value);
+        var BaseDate=new Date(document.getElementById('basedate').value);
+        var age=BaseDate.getFullYear()-Birthday.getFullYear(); //우선 연 나이를 구함.
+        var m=BaseDate.getMonth()-Birthday.getMonth(); 
+        if (m < 0 || (m==0 && BaseDate.getDate() < Birthday.getDate())){ // 기준날짜의 달이 생일의 달보다 빠르거나, 달이 같을때는 기준날짜의 날을 비교하여 생일이 지났는지 체크
             age--;
         }
-        if(age==-1){
-        document.getElementById('ageResult').style.color = "red";
-        document.getElementById('ageResult').innerText = "기준 날짜가 생일보다 빠릅니다!";
+        if(age==-1){ //나이가 음수일 수는 없으므로.
+        document.getElementById('ageResult').style.color="red";
+        document.getElementById('ageResult').innerText="기준 날짜가 생일보다 빠릅니다!";
         }            
         else if(age>=0){
-            document.getElementById('ageResult').style.color = "black"; //경고 이후 색 복구
-            document.getElementById('ageResult').innerText = "당신의 만나이는 " + age +"세 입니다.";
+            document.getElementById('ageResult').style.color="black"; //경고 이후 색 복구
+            document.getElementById('ageResult').innerText="당신의 만나이는 " + age +"세 입니다.";
         }
         else{
-            document.getElementById('ageResult').style.color = "red"
-            document.getElementById('ageResult').innerText = "입력이 완료되지 않습니다!"; //생일과 기준날짜중 하나라도 입력되지 않았다면 경고문 출력
+            document.getElementById('ageResult').style.color="red"
+            document.getElementById('ageResult').innerText="입력이 완료되지 않습니다!"; //생일과 기준날짜중 하나라도 입력되지 않았다면 경고문 출력
         } 
     }
     //최소개발기준 서비스3. 시간표만들기
-    function isValidTime(time) { //입력하지 않거나, 숫자가 아닌걸 입력하거나, 4자리로 입력하지 않거나, 범위를 벗어난 숫자입력하면 안됨.
+    function isValidTime(time){ //입력하지 않거나, 숫자가 아닌걸 입력하거나, 4자리로 입력하지 않거나, 범위를 벗어난 숫자입력하면 안됨.
         return /^\d{4}$/.test(time) && parseInt(time) >= 0 && parseInt(time) <= 2400; 
     }
       
-    function formatTime(time) { //시간을 0930으로 입력받은걸 09:30으로 교정
+    function formatTime(time){ //시간을 0930으로 입력받은걸 09:30으로 교정
         return time.substring(0, 2) + ":" + time.substring(2, 4); 
     }
 
-    function findRowIndex(table, start) { //시간을 어디에 배열할지 찾아줌
-        for (var i = 1; i < table.rows.length; i++) {
-            var rowTime = table.rows[i].cells[0].innerHTML.split(" ~ ")[0].replace(":", ""); //시간을 입력했을 때 시작시간을 비교하여 적절한 위치에 삽입하도록 위치를 찾음
-            if (parseInt(start) < parseInt(rowTime)) {
+    function findRowIndex(table, start){ //시간을 어디에 배열할지 찾아줌
+        for (var i=1; i < table.rows.length; i++){
+            var rowTime=table.rows[i].cells[0].innerHTML.split(" ~ ")[0].replace(":", ""); //시간을 입력했을 때 시작시간을 비교하여 적절한 위치에 삽입하도록 위치를 찾음
+            if (parseInt(start) < parseInt(rowTime)){
                 return i;
             }
         }
           return -1; // 중간에 삽입될 곳이 없다면 맨아래에 추가함.
     }
 
-    function addTime() {
-        var start = prompt("시작 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
-        var end = prompt("종료 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
-        if (!isValidTime(start) || !isValidTime(end)) {
+    function addTime(){
+        var start=prompt("시작 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
+        var end=prompt("종료 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
+        if (!isValidTime(start) || !isValidTime(end)){
             alert("유효한 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
             return; //입력을 정상적으로 진행시키지 않고 종료함
         }
@@ -409,29 +407,29 @@
             alert("끝나는 시간이 시작하는 시간보다 빠릅니다!")
             return; //입력을 정상적으로 진행시키지 않고 종료함
         }
-        var time = formatTime(start) + " ~ " + formatTime(end); 
-        var table = document.getElementById("timetable");
-        var rowIndex = findRowIndex(table, start);
-        var row = table.insertRow(rowIndex); //findRowIndex에서 찾은 넣어야하는 줄에 테이블 추가
-        var firstCell = row.insertCell(0); 
-        firstCell.innerHTML = time; //첫번째 행에는 시간을 작성해야함
-        firstCell.onclick = function() { //시간이 적힌 셀을 클릭하면 해당하는 열이 삭제됨
+        var time=formatTime(start) + " ~ " + formatTime(end); 
+        var table=document.getElementById("timetable");
+        var rowIndex=findRowIndex(table, start);
+        var row=table.insertRow(rowIndex); //findRowIndex에서 찾은 넣어야하는 줄에 테이블 추가
+        var firstCell=row.insertCell(0); 
+        firstCell.innerHTML=time; //첫번째 행에는 시간을 작성해야함
+        firstCell.onclick=function(){ //시간이 적힌 셀을 클릭하면 해당하는 열이 삭제됨
             this.parentElement.remove(); 
         }; 
-        for (var i = 1; i < 6; i++) { //월화수목금 제작
-            var cell = row.insertCell(i); //시간 추가 함수의 핵심으로 월화수목금 셀을 만듦.
-            cell.onclick = function() {
-                if (this.innerHTML == "") { //비어있는 셀을 클릭하면 내용을 삽입함
-                      var subject = prompt("과목명을 입력하세요");
-                      var room = prompt("강의실을 입력하세요");
-                      var professor = prompt("교수님의 성함을 입력하세요");
+        for (var i=1; i<6; i++){ //월화수목금 제작
+            var cell=row.insertCell(i); //시간 추가 함수의 핵심으로 월화수목금 셀을 만듦.
+            cell.onclick=function(){
+                if (this.innerHTML==""){ //비어있는 셀을 클릭하면 내용을 삽입함
+                      var subject=prompt("과목명을 입력하세요");
+                      var room=prompt("강의실을 입력하세요");
+                      var professor=prompt("교수님의 성함을 입력하세요");
                     if (subject==""||room==""||professor==""||subject==null||room==null||professor==null){ //아무것도 입력안하면 "", 취소누르면 null
                         alert("내용을 입력하세요!")
                         return; //입력을 정상적으로 진행시키지 않고 종료함
                     }
-                    this.innerHTML = subject + "<br>" + room + "<br>" + professor;
-                } else {
-                    this.innerHTML = ""; //이미 내용이 있는 셀을 클릭하면 내용을 비움
+                    this.innerHTML=subject+"<br>"+room+"<br>"+professor;
+                } else{
+                    this.innerHTML=""; //이미 내용이 있는 셀을 클릭하면 내용을 비움
                 }
             };
         }
