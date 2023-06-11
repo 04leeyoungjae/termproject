@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>TermProject</title>
 	<style>
-        [title]{ /*최소개발기준 : pseudo-classes 1번째*/
-            color: #40128B;
-        }
+
 
         body{
             margin: 0;
@@ -16,31 +14,39 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
         }
-        #menu_div ul{
+        [title]{ /*최소 개발 기준 : attribute selector 1번째*/
+            color: #40128B;
+        }
+
+        #menu_div ul{ /*최소 개발 기준 : combinator 1번째*/
         text-align: left;
         width: fit-content;
         margin: auto;
         padding-left: 20px;
     }
-        #User_Profile ul{
+        #User_Profile ul{ /*최소 개발 기준 : combinator 2번째*/
         text-align: left;
         width: fit-content;
         margin: auto;
         padding-left: 20px;
     }
 
-        #User_Profile li{
+        #User_Profile li{ /*최소 개발 기준 : combinator 3번째*/
         padding-left: 0px;
     }
         #profile_form{
         width: 400px;  /* 폭 조절 */
         margin: auto;  /* 가운데 정렬 */
     }
+
         header{
             background-color: #79E0EE;
             padding: 10px;
             text-align: center;
             color: black;
+        }
+        header div{ /*최소 개발 기준 : combinator 4번째*/
+            color:#8B1874;
         }
         footer{
             background-color: #D0F5BE;
@@ -61,11 +67,11 @@
             transition: right 0.3s ease-in-out;
         }
 
-        nav:hover{ /*최소 개발 기준 : attribute selectors 1번째*/
+        nav:hover{ /*최소개발기준 : pseudo-classes 1번째*/
             right: 0;
         }
 
-        [href]{ /*최소개발기준 : pseudo-classes 2번째*/
+        [href]{ /*최소 개발 기준 : attribute selector 2번째*/
             color: black;
             padding: 10px;
             text-decoration: none;
@@ -102,7 +108,7 @@
             border-radius: 10px;
         }
 
-        button:active{ /*최소 개발 기준 : attribute selectors 2번째*/
+        button:active{ /*최소개발기준 : pseudo-classes 2번째*/
             background-color: #A459D1;
         }
         table, th, td{
@@ -147,12 +153,16 @@
             margin-left: 50px;
         }
 
+        footer p{ /*최소 개발 기준 : combinator 5번째*/
+            font-style: italic;
+        }
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <!-- chatGPT api에서 $.ajax사용하기 위해 작성 -->
     <script> 
-        window.onload=function(){ //로드 되기 이전에 하면 getElementByID가 잘 작동하지않음
-            //1. BaseDate 디폴트를 오늘날짜로
+        window.onload=function(){ //테스트 결과 로드 되기 이전에 하면 프로필입력의 getElementByID가 잘 작동하지않음
+            //1. 만나이계산기 BaseDate 디폴트를 오늘날짜로
             var today=new Date();
             var dd=String(today.getDate()).padStart(2, '0');
             var mm=String(today.getMonth() + 1).padStart(2, '0'); //0~11로 세지는 달을 1~12로 수정
@@ -224,13 +234,21 @@
             if (month<=9){
                 month="0"+month //입력형식이 yyyymmdd 와 같은 형식이여서 202366 과 같은 형식이면 오류발생, 20230606이 되어야함
             }
-
+            var hours=today.getHours()-1;
+            if (hours==-1){
+                hours=23
+                date--;
+            }
             var date=today.getDate();
             if (date<=9){
                 date="0"+date //입력형식이 yyyymmdd 와 같은 형식이여서 202366 과 같은 형식이면 오류발생, 20230606이 되어야함
             }
 
-            var hours=today.getHours();
+
+            /*api가 문서에 따르면 매 시각 40분이후 갱신된다고 적혀있지만
+             직접 테스트 결과 40분 이후로도 갱신되지 않거나 
+            심할경우 2시간이 지나도 갱신되지 않는 경우를 확인함. 이를 예방하기 위해 6시간 단위로 갱신함.
+            */
             if (hours<=5){
                 hours="00"
             }
@@ -243,9 +261,6 @@
             else{
                 hours="18"
             }
-            /*
-                hours가 6시 단위로 갱신되어서 이외의 hours를 넣을경우 에러발생함
-            */
             var minutes=today.getMinutes();
             if (minutes<=9){
                 minutes="0"+minutes //입력형식이 hhmm과 같은 형식이여서 065 가 아닌 0605와 같은 형식으로 변경
@@ -305,11 +320,15 @@
                 let fashionDiv=document.getElementById('fashion');
                 fashionDiv.innerHTML="<h2 title=\"ChatGPT's fashion\">ChatGPT's fashion</h2>"+"잠시만 기다리시면 ChatGPT의 옷차림 추천을 받으실 수 있습니다."
                 chat(result) //결과를 매개변수로 하여 ChatGPT API에 넘김
-            })//첫번째 API 끝
+            }).catch(error=>{ //매월 1일 0시~1시에는 date가 0이되어 작동하지 않음.
+                let weatherResultDiv=document.getElementById('weather-result');
+                weatherResultDiv.innerHTML="매월 1일 0시~1시에는 작동하지 않습니다. 혹은 현재 api서버가 응답하지 않습니다."
+            })
+            //첫번째 API 끝
         }
         
         function chat(result){//최소개발기준 : 두번째 API 시작 - ChatGPT로 옷차림 추천받기(https://platform.openai.com/docs/api-reference/introduction)
-            const api_key="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" 
+            const api_key="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" 
             //일반적으로 api키는 서버에서 가지고있지만, 프로젝트를 위해 일시적으로 자바스크립트에 작성
 
             //프로필에서 작성했던 내용을 받아옴. 
@@ -331,7 +350,6 @@
                    { role: 'user', content: age_input.value+"세 "+gender+" "+user_name_input.value+"님에게 어울리는 옷차림을 추천해주세요. 날씨는 다음과 같습니다." + result},
                 ]; //사용자의 질문으로 프로필에 입력한 정보에서 nn세의 남성 혹은 여성이라는 정보를 chatGPT가 받아서 조금 더 정확한 추천을 받을 수 있음. 
                 //또한 이름을 받을 수 있어 사용자가 더 깊은 상호작용을 느낄 수 있게 함.
-                console.log("프로필입력O")
             } 
 
             const data={ //API 호출시 필요한 parameter
@@ -396,7 +414,7 @@
           return -1; // 중간에 삽입될 곳이 없다면 맨아래에 추가함.
     }
 
-    function addTime(){
+    function addTime(){ //시간표 만들기 메인 기능으로, 시간추가부터 셀의 이벤트리스너까지 다 담고있음.
         var start=prompt("시작 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
         var end=prompt("종료 시간을 입력하세요.\n예를 들어, 9시 50분 수업은 0950 / 13시 30분 수업은 1300");
         if (!isValidTime(start) || !isValidTime(end)){
@@ -439,7 +457,7 @@
 
 <body>
 	<header> <!--최소개발기준 : 시멘틱태그(header)-->
-		<h1>인터넷과 웹기초 Term Project</h1>
+		<div><h1>인터넷과 웹기초 Term Project</h1></div>
     </header>
     <nav> <!--최소개발기준 : 시멘틱태그(nav)-->
         <div id="menu_div">
@@ -529,7 +547,7 @@
         <div id="TimeTable">
             <h2 title="TimeTable">Time Table</h2>
             <p>당신의 시간표를 작성해보세요.<br>빈 셀을 클릭하여 작성하거나, 작성된 셀을 눌러 비울 수 있습니다.</p>
-            <table id="timetable">
+            <table id="timetable"> <!--최소개발기준 : table 사용-->
             <tr><th><!--비어있는행--></th><th>월요일</th><th>화요일</th><th>수요일</th><th>목요일</th><th>금요일</th></tr>
             </table>
             <button onclick="addTime()">시간 추가</button>
